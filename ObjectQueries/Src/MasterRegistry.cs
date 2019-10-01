@@ -11,10 +11,11 @@ namespace Mt.CodePatterns.ObjectQueries
          Scan(s =>
          {
             s.AssembliesAndExecutablesFromApplicationBaseDirectory();
-            s.AddAllTypesOf(typeof(IDataQuery<,>));
+            s.AddAllTypesOf(typeof(IObjectQueryRunner<,,>));
          });
 
-         For(typeof(IDataQueryRunService<,,>)).Use(typeof(DataQueryRunService<,,>));
+         For<IAppLogService>().Use<AppLogService>();
+         For(typeof(IObjectQueryRuntimeService<,,>)).Use(typeof(ObjectQueryRuntimeService<,,>));
       }
    }
 }

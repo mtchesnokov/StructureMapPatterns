@@ -4,17 +4,19 @@ using Mt.CodePatterns.ObjectQueries.Interfaces;
 namespace Mt.CodePatterns.ObjectQueries.Services
 {
    /// <summary>
-   ///    Basic implementation of <see cref="IDataQuery{TObject,TResult}" />
+   ///    Basic implementation of <see cref="IObjectQueryRunner{TObjectQueryType, TObject,TResult}" />
    /// </summary>
    /// <typeparam name="TObject"></typeparam>
    /// <typeparam name="TResult"></typeparam>
-   public abstract class DataQueryBase<TObject, TResult> : IDataQuery<TObject, TResult>
+   /// <typeparam name="TObjectQueryType"></typeparam>
+   public abstract class ObjectQueryRunnerBase<TObjectQueryType, TObject, TResult> : IObjectQueryRunner<TObjectQueryType, TObject, TResult>, IObjectQueryRunner<TObject, TResult>
+      where TObjectQueryType : IObjectQueryType
    {
       private readonly IAppLogService _appLogService;
 
       #region ctor
 
-      protected DataQueryBase(IAppLogService appLogService)
+      protected ObjectQueryRunnerBase(IAppLogService appLogService)
       {
          _appLogService = appLogService;
       }
@@ -29,7 +31,7 @@ namespace Mt.CodePatterns.ObjectQueries.Services
          }
 
          var eventName = "Running query of object";
-         var eventData = new {QueryType = GetType().Name, ObjectType = typeof(TObject)};
+         var eventData = new {QueryType = typeof(TObjectQueryType), ObjectType = typeof(TObject)};
 
          TResult result;
 

@@ -1,4 +1,6 @@
-﻿using StructureMap;
+﻿using System;
+using Mt.Demo.Lib;
+using StructureMap;
 
 namespace ConsoleApp1
 {
@@ -8,8 +10,14 @@ namespace ConsoleApp1
       {
          using (var container = CreateContainer())
          {
+            var person = new Person
+            {
+               Salutation = "Mr"
+            };
 
+            var salutation = container.RunObjectQuery<GetSalutationQuery, Person, string>(person);
 
+            Console.WriteLine(salutation);
          }
       }
 
