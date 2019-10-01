@@ -7,4 +7,7 @@ software development:
   * [Ensure that the selected approach offers sufficient extensibility to match changing needs](#convertingdocumentblob)
   * [Ensure that the code is testable](#convertingdocumentusingcontenturl)
 
+The repo contains at the moment the following patterns:
+
+* <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ObjectQueries/README.md'>Object query pattern</a>
 
