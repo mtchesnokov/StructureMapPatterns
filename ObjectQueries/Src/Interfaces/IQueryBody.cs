@@ -5,9 +5,11 @@
    /// </summary>
    /// <typeparam name="TObject"></typeparam>
    /// <typeparam name="TResult"></typeparam>
-   public interface IObjectQueryRuntimeService<TObjectQueryType, TObject, TResult>
-      where TObjectQueryType : IObjectQueryType
+   public interface IQueryBody<TQuery, TObject, TResult>
+      where TQuery : IQuery<TObject, TResult>
    {
+      string CanStart(TObject source);
+
       TResult Query(TObject source);
    }
 }

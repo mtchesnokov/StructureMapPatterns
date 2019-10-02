@@ -1,5 +1,7 @@
 ﻿using Mt.CodePatterns.ObjectQueries.Interfaces;
+using Mt.CodePatterns.ObjectQueries.Interfaces.Helpers;
 using Mt.CodePatterns.ObjectQueries.Services;
+using Mt.CodePatterns.ObjectQueries.Services.Helpers;
 using StructureMap;
 
 namespace Mt.CodePatterns.ObjectQueries
@@ -11,11 +13,11 @@ namespace Mt.CodePatterns.ObjectQueries
          Scan(s =>
          {
             s.AssembliesAndExecutablesFromApplicationBaseDirectory();
-            s.AddAllTypesOf(typeof(IObjectQueryRunner<,,>));
+            s.AddAllTypesOf(typeof(IQueryBody<,,>));
          });
 
          For<IAppLogService>().Use<AppLogService>();
-         For(typeof(IObjectQueryRuntimeService<,,>)).Use(typeof(ObjectQueryRuntimeService<,,>));
+         For(typeof(IQueryRuntime)).Use(typeof(QueryRuntime));
       }
    }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Mt.CodePatterns.ObjectQueries.Interfaces;
 using Mt.Demo.Lib;
 using StructureMap;
 
@@ -12,10 +13,14 @@ namespace ConsoleApp1
          {
             var person = new Person
             {
-               Salutation = "Mr"
+               Salutation = "Mr",
+               FirstName = "John",
+               LastName = "Silver"
             };
 
-            var salutation = container.RunObjectQuery<GetSalutationQuery, Person, string>(person);
+            var queryRuntime = container.GetInstance<IQueryRuntime>();
+
+            var salutation = queryRuntime.Query<GetSalutationQuery, Person, string>(person);
 
             Console.WriteLine(salutation);
          }

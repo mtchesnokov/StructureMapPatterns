@@ -1,6 +1,7 @@
 ﻿namespace Mt.CodePatterns.ObjectQueries.Interfaces
 {
-   public interface IObjectQueryType
+   public interface IHaveOutput<TResult>
    {
+
    }
 }

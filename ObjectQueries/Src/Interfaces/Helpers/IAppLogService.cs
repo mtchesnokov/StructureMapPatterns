@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mt.CodePatterns.ObjectQueries.Interfaces
+namespace Mt.CodePatterns.ObjectQueries.Interfaces.Helpers
 {
    /// <summary>
    /// Service to send messages to app log
