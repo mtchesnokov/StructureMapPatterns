@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mt.CodePatterns.ObjectQueries.Services
+namespace Mt.CodePatterns.ObjectQueries.Domain
 {
    public class QueryCannotStartException : Exception
    {

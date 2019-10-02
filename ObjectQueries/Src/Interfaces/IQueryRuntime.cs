@@ -1,10 +1,14 @@
-﻿namespace Mt.CodePatterns.ObjectQueries.Interfaces
+﻿using Mt.CodePatterns.ObjectQueries.Domain;
+
+namespace Mt.CodePatterns.ObjectQueries.Interfaces
 {
    /// <summary>
-   ///    Service that represents simple object query
+   ///    Service that executes the query/quries
    /// </summary>
    public interface IQueryRuntime
    {
-      TResult Query<TQuery, TObject, TResult>(TObject source) where TQuery : IQuery<TObject, TResult>;
+      TResult RunQuery<TQuery, TObject, TResult>(TObject source) where TQuery : IQuery<TObject, TResult>;
+
+      QueryResultset RunAllQueries<TObject>(TObject source);
    }
 }

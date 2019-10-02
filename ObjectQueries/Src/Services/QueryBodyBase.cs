@@ -10,7 +10,7 @@ namespace Mt.CodePatterns.ObjectQueries.Services
    /// <typeparam name="TObject"></typeparam>
    /// <typeparam name="TResult"></typeparam>
    /// <typeparam name="TQuery"></typeparam>
-   public abstract class QueryBodyBase<TQuery, TObject, TResult> : IQueryBody<TQuery, TObject, TResult>
+   public abstract class QueryBodyBase<TQuery, TObject, TResult> : IQueryBody<TQuery, TObject, TResult>, IQueryBody
       where TQuery : IQuery<TObject, TResult>
    {
       private readonly IAppLogService _appLogService;
@@ -60,5 +60,15 @@ namespace Mt.CodePatterns.ObjectQueries.Services
       }
 
       protected abstract TResult QueryImpl(TObject source);
+
+      string IQueryBody.CanStart(object source)
+      {
+         return CanStart((TObject) source);
+      }
+
+      object IQueryBody.Query(object source)
+      {
+         return Query((TObject) source);
+      }
    }
 }

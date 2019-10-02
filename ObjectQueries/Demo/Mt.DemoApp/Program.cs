@@ -20,10 +20,34 @@ namespace ConsoleApp1
 
             var queryRuntime = container.GetInstance<IQueryRuntime>();
 
-            var salutation = queryRuntime.Query<GetSalutationQuery, Person, string>(person);
+            RunSingleQuery(queryRuntime, person);
 
-            Console.WriteLine(salutation);
+            RunAllQueries(queryRuntime, person);
          }
+      }
+
+      private static void RunAllQueries(IQueryRuntime queryRuntime, Person person)
+      {
+         Console.WriteLine("\nRunning all registered queries....");
+
+         var queryResultset = queryRuntime.RunAllQueries(person);
+
+         var salutation = queryResultset.GetQueryResult<GetSalutationQuery, string>();
+
+         Console.WriteLine($"Salutation : {salutation}");
+
+         var fullName = queryResultset.GetQueryResult<GetFullNameQuery, string>();
+
+         Console.WriteLine($"Full name: {fullName}");
+      }
+
+      private static void RunSingleQuery(IQueryRuntime queryRuntime, Person person)
+      {
+         Console.WriteLine("Running specific query...");
+
+         var salutation = queryRuntime.RunQuery<GetSalutationQuery, Person, string>(person);
+
+         Console.WriteLine($"Salutation: {salutation}");
       }
 
       private static IContainer CreateContainer()
