@@ -42,7 +42,7 @@ namespace Mt.CodePatterns.ObjectQueries.Services
          return result;
       }
 
-      public QueryResultset RunAllQueries<TObject>(TObject source)
+      public IQueryResultset RunAllQueries<TObject>(TObject source)
       {
          var queryBodyTypes = _container.Model.PluginTypes
             .Where(t => t.PluginType.IsGenericType && t.PluginType.GetGenericTypeDefinition() == typeof(IQueryBody<,,>))

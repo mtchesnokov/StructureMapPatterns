@@ -5,7 +5,7 @@ using Mt.CodePatterns.ObjectQueries.Interfaces;
 
 namespace Mt.CodePatterns.ObjectQueries.Domain
 {
-   public class QueryResultset
+   internal class QueryResultset : IQueryResultset
    {
       private readonly List<Tuple<Type, Type, object>> _list;
 
@@ -15,7 +15,7 @@ namespace Mt.CodePatterns.ObjectQueries.Domain
       }
 
       public TResult GetQueryResult<TQuery, TResult>()
-         where TQuery : IHaveOutput<TResult>
+         where TQuery : IHaveResult<TResult>
       {
          var queryType = typeof(TQuery);
          var resultType = typeof(TResult);
