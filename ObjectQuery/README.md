@@ -75,6 +75,8 @@ IQueryRuntime queryRuntime = container.GetInstance<IQueryRuntime>();
 
 IQueryResultset queryResultset = queryRuntime.RunAllQueries(person);
 
+string salutation = queryResultset.GetQueryResult<GetSalutationQuery, string>();
+
 Console.WriteLine($"Salutation : {salutation}");
 
 ```
