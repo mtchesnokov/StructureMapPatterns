@@ -16,6 +16,7 @@ namespace Mt.CodePatterns.ObjectQueries
             s.AddAllTypesOf(typeof(IQueryBody<,,>));
          });
 
+         For<IQueryDescriptorProvider>().Use<QueryDescriptorProvider>();
          For<IAppLogService>().Use<AppLogService>();
          For(typeof(IQueryRuntime)).Use(typeof(QueryRuntime));
       }

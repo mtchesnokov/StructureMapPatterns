@@ -81,4 +81,33 @@ Console.WriteLine($"Salutation : {salutation}");
 
 ```
 
+Run complex query on Person:
 
+```csharp
+   public class GetPersonGreetingQuery : IComplexQuery<Person, string>
+   {
+      public IEnumerable<INeedInput<Person>> SubQueries
+      {
+         get
+         {
+            yield return new GetSalutationQuery();
+            yield return new GetFullNameQuery();
+         }
+      }
+
+      public string Execute(IQueryResultset queryResultset)
+      {
+         var salutation = queryResultset.GetQueryResult<GetSalutationQuery, string>();
+         var fullName = queryResultset.GetQueryResult<GetFullNameQuery, string>();
+         return $"{salutation} {fullName}";
+      }
+   }
+
+
+         Console.WriteLine("Running complex query...");
+
+         string greeting = queryRuntime.RunComplexQuery<GetPersonGreetingQuery, Person, string>(person);
+
+         Console.WriteLine($"Greeting: {greeting}");
+
+```

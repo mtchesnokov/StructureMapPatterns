@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Mt.CodePatterns.ObjectQueries.Interfaces;
 
-namespace Mt.CodePatterns.ObjectQueries.Domain
+namespace Mt.CodePatterns.ObjectQueries.Domain.Objects
 {
    internal class QueryResultset : IQueryResultset
    {

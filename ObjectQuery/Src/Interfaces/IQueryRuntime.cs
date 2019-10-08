@@ -8,5 +8,7 @@
       TResult RunQuery<TQuery, TObject, TResult>(TObject source) where TQuery : IQuery<TObject, TResult>;
 
       IQueryResultset RunAllQueries<TObject>(TObject source);
+
+      TResult RunComplexQuery<TComplexQuery, TObject, TResult>(TObject source) where TComplexQuery : IComplexQuery<TObject, TResult>;
    }
 }

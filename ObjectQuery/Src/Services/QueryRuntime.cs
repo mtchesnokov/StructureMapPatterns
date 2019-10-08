@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mt.CodePatterns.ObjectQueries.Domain;
+using Mt.CodePatterns.ObjectQueries.Domain.Exceptions;
+using Mt.CodePatterns.ObjectQueries.Domain.Objects;
 using Mt.CodePatterns.ObjectQueries.Interfaces;
+using Mt.CodePatterns.ObjectQueries.Interfaces.Helpers;
 using StructureMap;
 
 namespace Mt.CodePatterns.ObjectQueries.Services
@@ -10,12 +12,14 @@ namespace Mt.CodePatterns.ObjectQueries.Services
    public class QueryRuntime : IQueryRuntime
    {
       private readonly IContainer _container;
+      private readonly IQueryDescriptorProvider _queryDescriptorProvider;
 
       #region ctor
 
       public QueryRuntime(IContainer container)
       {
          _container = container;
+         _queryDescriptorProvider = container.GetInstance<IQueryDescriptorProvider>();
       }
 
       #endregion
@@ -44,38 +48,54 @@ namespace Mt.CodePatterns.ObjectQueries.Services
 
       public IQueryResultset RunAllQueries<TObject>(TObject source)
       {
-         var queryBodyTypes = _container.Model.PluginTypes
-            .Where(t => t.PluginType.IsGenericType && t.PluginType.GetGenericTypeDefinition() == typeof(IQueryBody<,,>))
-            .Where(t => typeof(INeedInput<TObject>).IsAssignableFrom(t.PluginType))
-            .Select(x => x.PluginType).ToArray();
+         var queryDescriptors = _queryDescriptorProvider.GetQueryDescriptors<TObject>();
 
-         var list = new List<Tuple<Type, Type, object>>(queryBodyTypes.Length);
+         var list = new List<Tuple<Type, Type, object>>(queryDescriptors.Count());
 
-         foreach (var queryBodyType in queryBodyTypes)
+         foreach (var queryDescriptor in queryDescriptors)
          {
-            var queryType = queryBodyType.GenericTypeArguments[0];
-            var resultType = queryBodyType.GenericTypeArguments[2];
-
-            var queryBody = _container.GetInstance(queryBodyType) as IQueryBody;
+            var queryBody = (IQueryBody) _container.GetInstance(queryDescriptor.QueryBodyType);
 
             var canStart = queryBody.CanStart(source);
 
             if (!string.IsNullOrEmpty(canStart))
             {
-               throw new QueryCannotStartException
-               {
-                  FailureReason = canStart,
-                  QueryType = queryType,
-                  ObjectType = typeof(TObject),
-                  ResultType = resultType
-               };
+               throw new QueryCannotStartException(canStart, queryDescriptor);
             }
 
-            var result = queryBody.Query(source);
-            list.Add(new Tuple<Type, Type, object>(queryType, resultType, result));
+            var queryResult = queryBody.Query(source);
+
+            list.Add(new Tuple<Type, Type, object>(queryDescriptor.QueryType, queryDescriptor.ResultType, queryResult));
          }
 
          return new QueryResultset(list);
+      }
+
+      public TResult RunComplexQuery<TComplexQuery, TObject, TResult>(TObject source) where TComplexQuery : IComplexQuery<TObject, TResult>
+      {
+         var complexQueryInstance = _container.GetInstance<TComplexQuery>();
+         var subQueryTypes = complexQueryInstance.SubQueries.Select(x => x.GetType()).ToArray();
+         var queryDescriptors = _queryDescriptorProvider.GetQueryDescriptors<TObject>(subQueryTypes);
+         var queryBodyTypes = queryDescriptors.Select(x => x.QueryBodyType).ToArray();
+
+         var list = new List<Tuple<Type, Type, object>>(queryBodyTypes.Length);
+
+         foreach (var queryDescriptor in queryDescriptors)
+         {
+            var queryBody = (IQueryBody) _container.GetInstance(queryDescriptor.QueryBodyType);
+            var canStart = queryBody.CanStart(source);
+
+            if (!string.IsNullOrEmpty(canStart))
+            {
+               throw new QueryCannotStartException(canStart, queryDescriptor);
+            }
+
+            var result = queryBody.Query(source);
+            list.Add(new Tuple<Type, Type, object>(queryDescriptor.QueryType, queryDescriptor.ResultType, result));
+         }
+
+         var queryResult = new QueryResultset(list);
+         return complexQueryInstance.Execute(queryResult);
       }
    }
 }
