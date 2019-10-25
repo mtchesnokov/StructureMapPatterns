@@ -37,8 +37,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestExtensions\PrintExtension.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase3\UnhappyTests.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase3\SetUp.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase2\HappyTests.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase2\SetUp.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase1\HappyTests.cs" />
+    <Compile Include="UseCases\CanMatchObjectId\UseCase1\SetUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
@@ -54,8 +61,6 @@
       <Name>Mt.CodePatterns.ObjectExtender</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UseCases\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

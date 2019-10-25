@@ -1,113 +1,64 @@
-# Object Query
+# Object Extender
 
 ## Problem
+Imagine we have code that we have build upon an object type (say Person). Each person has unique `Id`attribute and we can get all persons or find one 
+by its `Id`. Imagine now that we no have 'external' objects (say coming from external REST api) that do not have this attribute. But it would be very 
+desirable to re-use the existing infra to provide the same level of services that we have for the own class. An posibble solution will be to 'extend' the 
+third party class by 'attaching' the missing column. In this demo we will show how to do that. 
 
-We have an object instance (say of type 'Person'). That instance can be an object graph i.e. include accompaning child collections. 
-We want to run computations on that object (say calculate person's display name, credit rating, etc). Each of those computations is an query that is run on that object (with possibility to use external data). 
-
-## Requirements
-* Each query is atomic and can be run independently from others
-* Each query can be testible individually 
-* Queries can be combined together to produce complex query scenarios 
-* Each query can be re-used (multiple complex queries can call the same query)
-
-
-## Implementation 
-The implementation of that pattern include 2 logical parts: 
-* Object query (actual worker part)
-* Object query runtime (this manages execution, error logging and discovery)
-
-## Code example
-
-As an simple exammple, we will calculate Person's display name based on provided Person instance
+## Existing code
 
 ```csharp
-public class Person
+public class OwnPerson : IHaveId<int>
 {
-   public string Salutation { get; set; }
+   public int Id { get; set; }
 
-   public string FirstName { get; set; }
+   public string Name { get; set; }
+}
 
-   public string LastName { get; set; }
+public interface IDataObjectProviderExt<TObjectId, TObject>
+{
+   IEnumerable<TObject> GetAll();
+
+   TObject GetById(TObjectId id);
+}
+
+IDataObjectProviderExt<int, OwnPerson> provider = container.GetInstance<IDataObjectProviderExt<int, OwnPerson>>();
+int objectId = 1;
+OwnPerson obj = provider.GetById(objectId);
+```
+
+## External class
+
+```csharp
+public class ThirdPartyPerson
+{
+   public int PersonNo { get; set; }
+
+   public string Name { get; set; }
 }
 ```
-Each query has header and body:
+
+## Extending external class
+
+We can extend externl class by creating own class that implements `IKnowObjectId` interface
 
 ```csharp
-public class GetSalutationQuery : IQuery<Person, string>
+public class ThirdPartyPersonExtender : IKnowObjectId<ThirdPartyPerson, int>
 {
-}
-
-public class GetSalutationQueryBody : QueryBodyBase<GetSalutationQuery, Person, string>
-{
-   public override string CanStart(Person source)
+   public int GetId(ThirdPartyPerson obj)
    {
-      if (string.IsNullOrEmpty(source.Salutation))
-      {
-         return "Salutation cannot be empty";
-      }
-
-      return string.Empty;
-   }
-
-   protected override string QueryImpl(Person source)
-   {
-      return source.Salutation;
+      return obj.PersonNo;
    }
 }
 ```
 
-Run individual query:
+## Using external objects in own pipeline
+
+Now external class can also be used in other services that assume that the clas has `Id' attibute.
 
 ```csharp
-IQueryRuntime queryRuntime = container.GetInstance<IQueryRuntime>();
-
-string salutation = queryRuntime.RunQuery<GetSalutationQuery, Person, string>(person)
-
-Console.WriteLine($"Salutation : {salutation}");
-
-```
-
-Run all known queries on Person (queries get auto discovered):
-
-```csharp
-IQueryRuntime queryRuntime = container.GetInstance<IQueryRuntime>();
-
-IQueryResultset queryResultset = queryRuntime.RunAllQueries(person);
-
-string salutation = queryResultset.GetQueryResult<GetSalutationQuery, string>();
-
-Console.WriteLine($"Salutation : {salutation}");
-
-```
-
-Run complex query on Person:
-
-```csharp
-   public class GetPersonGreetingQuery : IComplexQuery<Person, string>
-   {
-      public IEnumerable<INeedInput<Person>> SubQueries
-      {
-         get
-         {
-            yield return new GetSalutationQuery();
-            yield return new GetFullNameQuery();
-         }
-      }
-
-      public string Execute(IQueryResultset queryResultset)
-      {
-         var salutation = queryResultset.GetQueryResult<GetSalutationQuery, string>();
-         var fullName = queryResultset.GetQueryResult<GetFullNameQuery, string>();
-         return $"{salutation} {fullName}";
-      }
-   }
-
-
-         Console.WriteLine("Running complex query...");
-
-         string greeting = queryRuntime.RunComplexQuery<GetPersonGreetingQuery, Person, string>(person);
-
-         Console.WriteLine($"Greeting: {greeting}");
-
+IDataObjectProviderExt<int, ThirdPartyPerson> provider = container.GetInstance<IDataObjectProviderExt<int, ThirdPartyPerson>>();
+int objectId = 1;
+ThirdPartyPerson obj = provider.GetById(objectId);
 ```

@@ -1,4 +1,6 @@
-﻿using StructureMap;
+﻿using Mt.CodePatterns.ObjectExtender.Interfaces;
+using Mt.CodePatterns.ObjectExtender.Services;
+using StructureMap;
 
 namespace Mt.CodePatterns.ObjectExtender
 {
@@ -6,7 +8,14 @@ namespace Mt.CodePatterns.ObjectExtender
    {
       public MasterRegistry()
       {
-         Scan(s => { s.AssembliesAndExecutablesFromApplicationBaseDirectory(); });
+         Scan(s =>
+         {
+            s.AssembliesAndExecutablesFromApplicationBaseDirectory();
+            s.AddAllTypesOf(typeof(IHaveId<>));
+            s.AddAllTypesOf(typeof(IKnowObjectId<,>));
+         });
+
+         For(typeof(ICanMatchObjectId<,>)).Use(typeof(CanMatchObjectId<,>));
       }
    }
 }

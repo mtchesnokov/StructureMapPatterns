@@ -9,12 +9,4 @@
     <PackageReference Include="structuremap" Version="4.7.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\Exceptions\" />
-    <Folder Include="Domain\Helpers\" />
-    <Folder Include="Domain\Objects\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
