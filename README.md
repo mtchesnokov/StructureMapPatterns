@@ -13,4 +13,5 @@ Alle the examples presented here extensively use SOLID principle with StructureM
 The repo contains at the moment the following patterns:
 
 * <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ObjectQuery/README.md'>Object query pattern</a>
+* <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ObjectExtender/README.md'>Object extender pattern</a>
 
