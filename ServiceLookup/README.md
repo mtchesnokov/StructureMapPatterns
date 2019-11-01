@@ -1,4 +1,4 @@
-# Object Extender
+# Service lookup
 
 ## Problem
 Imagine we have the following problem: our application should be able to send different types of messages to users. Say, sms or email. However the type of the message that should be sent is only known at runtime when user select it in dropdown. So our requirements are as follows: 
