@@ -14,4 +14,4 @@ The repo contains at the moment the following patterns:
 
 * <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ObjectQuery/README.md'>Object query pattern</a>
 * <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ObjectExtender/README.md'>Object extender pattern</a>
-
+* <a href='https://github.com/mtchesnokov/CodePatterns/blob/master/ServiceLookup/README.md'>Service lookup pattern</a>
