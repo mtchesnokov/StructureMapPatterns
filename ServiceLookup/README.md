@@ -13,7 +13,7 @@ Thanks to a simple trick in the implementation, it is possible to use DI contain
 right implementation given the message type. 
 
 
-## Existing code
+## Using lookup 
 
 ```csharp
    public interface IMessage
@@ -40,4 +40,38 @@ right implementation given the message type.
    }
 ```
 
+
+## Sms message
+
+```csharp
+   public class SmsMessage : IMessage
+   {
+   }
+
+   public class SmsMessageSendService : CanSendSpecificMessageBase<SmsMessage>
+   {
+      public override void Send(SmsMessage message)
+      {
+         Console.WriteLine("Sending sms message...");
+      }
+   }
+       
+```
+
+## Email message
+
+```csharp
+   public class EmailMessage : IMessage
+   {
+   }
+
+   public class EmailMessageSendService : CanSendSpecificMessageBase<EmailMessage>
+   {
+      public override void Send(EmailMessage message)
+      {
+         Console.WriteLine("Sending email message...");
+      }
+   }
+       
+```
 
