@@ -1,64 +1,43 @@
 # Object Extender
 
 ## Problem
-Imagine we have code that we have build upon an object type (say Person). Each person has unique `Id`attribute and we can get all persons or find one 
-by its `Id`. Imagine now that we no have 'external' objects (say coming from external REST api) that do not have this attribute. But it would be very 
-desirable to re-use the existing infra to provide the same level of services that we have for the own class. An posibble solution will be to 'extend' the 
-third party class by 'attaching' the missing column. In this demo we will show how to do that. 
+Imagine we have the following problem: our application should be able to send different types of messages to users. Say, sms or email. However the type of the message that should be sent is only known at runtime when user select it in dropdown. So our requirements are as follows: 
+- Type of message to be sent is only know at runtime
+- New types of messages can be added in the future
+- Adding new type of message should have minimum implementation effort 
+- Adding new type of message should have minimum impact on the existing codebase
+- And last but not least, adding new code should not increase cyclomatic complexity of the code. That is, no if's!
+
+## Solution
+Thanks to a simple trick in the implementation, it is possible to use DI container itself as dispatcher that locates the 
+right implementation given the message type. 
+
 
 ## Existing code
 
 ```csharp
-public class OwnPerson : IHaveId<int>
-{
-   public int Id { get; set; }
-
-   public string Name { get; set; }
-}
-
-public interface IDataObjectProviderExt<TObjectId, TObject>
-{
-   IEnumerable<TObject> GetAll();
-
-   TObject GetById(TObjectId id);
-}
-
-IDataObjectProviderExt<int, OwnPerson> provider = container.GetInstance<IDataObjectProviderExt<int, OwnPerson>>();
-int objectId = 1;
-OwnPerson obj = provider.GetById(objectId);
-```
-
-## External class
-
-```csharp
-public class ThirdPartyPerson
-{
-   public int PersonNo { get; set; }
-
-   public string Name { get; set; }
-}
-```
-
-## Extending external class
-
-We can extend externl class by creating own class that implements `IKnowObjectId` interface
-
-```csharp
-public class ThirdPartyPersonExtender : IKnowObjectId<ThirdPartyPerson, int>
-{
-   public int GetId(ThirdPartyPerson obj)
+   public interface IMessage
    {
-      return obj.PersonNo;
    }
-}
+
+   public interface ICanSendMessage
+   {
+      void Send(IMessage message);
+   }
+   
+    private static void SendingSmsMessage(IContainer container)
+    {
+       var service = container.GetInstance<ICanSendMessage>();
+       var message = new SmsMessage();
+       service.Send(message);
+    }
+    
+   private static void SendingMailMessage(IContainer container)
+   {
+      var service = container.GetInstance<ICanSendMessage>();
+      var message = new MailMessage();
+      service.Send(message);
+   }
 ```
 
-## Using external objects in own pipeline
 
-Now external class can also be used in other services that assume that the clas has `Id' attibute.
-
-```csharp
-IDataObjectProviderExt<int, ThirdPartyPerson> provider = container.GetInstance<IDataObjectProviderExt<int, ThirdPartyPerson>>();
-int objectId = 1;
-ThirdPartyPerson obj = provider.GetById(objectId);
-```
