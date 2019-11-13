@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{34F468AD-173
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C016944E-0EE8-491E-B1F0-833CBA640A4D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mt.CodePatterns.ServiceLookup", "Src\Mt.CodePatterns.ServiceLookup.csproj", "{01F56465-FE6F-45FB-BF14-65F65F2ACEAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mt.CodePatterns.Adapter", "Src\Mt.CodePatterns.Adapter.csproj", "{01F56465-FE6F-45FB-BF14-65F65F2ACEAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mt.CodePatterns.ServiceLookup.UnitTests", "Tests\Mt.CodePatterns.ServiceLookup.UnitTests\Mt.CodePatterns.ServiceLookup.UnitTests.csproj", "{FF8EE7B0-0B98-4293-A293-E6F4988FDCAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mt.CodePatterns.Adapter.UnitTests", "Tests\Mt.CodePatterns.Adapter.UnitTests\Mt.CodePatterns.Adapter.UnitTests.csproj", "{FF8EE7B0-0B98-4293-A293-E6F4988FDCAC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mt.DemoApp", "Demo\Mt.DemoApp\Mt.DemoApp.csproj", "{14A63633-8BC8-4953-9202-0E6F103A6120}"
 EndProject
