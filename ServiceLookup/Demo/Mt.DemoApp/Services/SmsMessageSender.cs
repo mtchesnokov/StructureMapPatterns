@@ -3,7 +3,7 @@ using Mt.CodePatterns.ServiceLookup.Services;
 
 namespace ConsoleApp1.Services
 {
-   public class SmsMessageSendService : CanSendSpecificMessageBase<SmsMessage>
+   public class SmsMessageSender : MessageSenderBase<SmsMessage>
    {
       public override void Send(SmsMessage message)
       {

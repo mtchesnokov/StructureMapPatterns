@@ -10,24 +10,24 @@ namespace ConsoleApp1
       {
          using (var container = CreateContainer())
          {
-            SendingSmsMessage(container);
+            var messageService = container.GetInstance<IMessageService>();
 
-            SendingMailMessage(container);
+            SendSmsMessage(messageService);
+
+            SendMailMessage(messageService);
          }
       }
 
-      private static void SendingSmsMessage(IContainer container)
+      private static void SendSmsMessage(IMessageService messageService)
       {
-         var service = container.GetInstance<ICanSendMessage>();
          var message = new SmsMessage();
-         service.Send(message);
+         messageService.Send(message);
       }
 
-      private static void SendingMailMessage(IContainer container)
+      private static void SendMailMessage(IMessageService messageService)
       {
-         var service = container.GetInstance<ICanSendMessage>();
          var message = new MailMessage();
-         service.Send(message);
+         messageService.Send(message);
       }
 
       private static IContainer CreateContainer()

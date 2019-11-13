@@ -2,7 +2,7 @@
 using Mt.CodePatterns.ServiceLookup.Interfaces;
 using Mt.CodePatterns.ServiceLookup.Services;
 
-namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.CanSendMessage.UseCase1
+namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.MessageService.UseCase1
 {
    public class SmsMessage : IMessage
    {
@@ -12,7 +12,7 @@ namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.CanSendMessage.UseCas
    {
    }
 
-   public class SmsMessageSendService : CanSendSpecificMessageBase<SmsMessage>
+   public class SmsMessageSendService : MessageSenderBase<SmsMessage>
    {
       public override void Send(SmsMessage message)
       {
@@ -20,7 +20,7 @@ namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.CanSendMessage.UseCas
       }
    }
 
-   public class MailMessageSendService : CanSendSpecificMessageBase<MailMessage>
+   public class MailMessageSendService : MessageSenderBase<MailMessage>
    {
       public override void Send(MailMessage message)
       {

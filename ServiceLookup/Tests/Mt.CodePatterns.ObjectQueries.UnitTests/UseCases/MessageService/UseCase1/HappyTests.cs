@@ -1,9 +1,9 @@
 ﻿using Mt.CodePatterns.ServiceLookup.Interfaces;
 using NUnit.Framework;
 
-namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.CanSendMessage.UseCase1
+namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.MessageService.UseCase1
 {
-   public class HappyTests : UnitTestBase<ICanSendMessage>
+   public class HappyTests : UnitTestBase<IMessageService>
    {
       [Test]
       public void Sending_Sms()

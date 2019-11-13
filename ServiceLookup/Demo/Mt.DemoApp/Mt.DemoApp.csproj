@@ -46,10 +46,10 @@
   <ItemGroup>
     <Compile Include="Services\SmsMessage.cs" />
     <Compile Include="Services\MailMessage.cs" />
-    <Compile Include="Services\MailMessageSendService.cs" />
+    <Compile Include="Services\MailMessageSender.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SmsMessageSendService.cs" />
+    <Compile Include="Services\SmsMessageSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

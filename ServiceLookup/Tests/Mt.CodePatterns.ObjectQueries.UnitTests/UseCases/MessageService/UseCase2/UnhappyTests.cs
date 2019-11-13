@@ -2,9 +2,9 @@
 using Mt.CodePatterns.ServiceLookup.Interfaces;
 using NUnit.Framework;
 
-namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.CanSendMessage.UseCase2
+namespace Mt.CodePatterns.ServiceLookup.UnitTests.UseCases.MessageService.UseCase2
 {
-   public class UnhappyTests : UnitTestBase<ICanSendMessage>
+   public class UnhappyTests : UnitTestBase<IMessageService>
    {
       [Test]
       public void Operation_Not_Supported()

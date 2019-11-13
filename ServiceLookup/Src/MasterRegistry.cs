@@ -12,10 +12,10 @@ namespace Mt.CodePatterns.ServiceLookup
          {
             s.AssembliesAndExecutablesFromApplicationBaseDirectory();
             s.AddAllTypesOf(typeof(IMessage));
-            s.AddAllTypesOf(typeof(ICanSendSpecificMessage<>));
+            s.AddAllTypesOf(typeof(IMessageSender<>));
          });
 
-         For<ICanSendMessage>().Use<CanSendMessage>();
+         For<IMessageService>().Use<MessageService>();
       }
    }
 }

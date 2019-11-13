@@ -9,6 +9,6 @@ namespace Mt.CodePatterns.ServiceLookup.Domain.Exceptions
       {
       }
 
-      public string ServiceType { get; set; }
+      public Type MessageType { get; set; }
    }
 }

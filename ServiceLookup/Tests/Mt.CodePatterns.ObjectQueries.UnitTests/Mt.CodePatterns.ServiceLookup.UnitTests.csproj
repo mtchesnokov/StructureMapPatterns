@@ -40,10 +40,10 @@
     <Compile Include="TestExtensions\PrintExtension.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UseCases\CanSendMessage\UseCase2\SetUp.cs" />
-    <Compile Include="UseCases\CanSendMessage\UseCase2\UnhappyTests.cs" />
-    <Compile Include="UseCases\CanSendMessage\UseCase1\HappyTests.cs" />
-    <Compile Include="UseCases\CanSendMessage\UseCase1\SetUp.cs" />
+    <Compile Include="UseCases\MessageService\UseCase2\SetUp.cs" />
+    <Compile Include="UseCases\MessageService\UseCase2\UnhappyTests.cs" />
+    <Compile Include="UseCases\MessageService\UseCase1\HappyTests.cs" />
+    <Compile Include="UseCases\MessageService\UseCase1\SetUp.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">

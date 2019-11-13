@@ -5,19 +5,25 @@ using StructureMap.Attributes;
 
 namespace Mt.CodePatterns.ServiceLookup.Services
 {
-   public class CanSendMessage : ICanSendMessage
+   /// <summary>
+   /// Implementation of <see cref="IMessageService"/>
+   /// </summary>
+   public class MessageService : IMessageService
    {
       [SetterProperty]
       public IContainer Container { get; set; }
 
       public void Send(IMessage message)
       {
-         var serviceType = typeof(ICanSendSpecificMessage<>).MakeGenericType(message.GetType());
-         var serviceInstance = Container.TryGetInstance(serviceType) as ICanSendSpecificMessage;
+         var serviceType = typeof(IMessageSender<>).MakeGenericType(message.GetType());
+         var serviceInstance = Container.TryGetInstance(serviceType) as IMessageSender;
 
          if (serviceInstance == null)
          {
-            throw new OperationNotSupportedException {ServiceType = serviceType.FullName};
+            throw new OperationNotSupportedException
+            {
+               MessageType = message.GetType()
+            };
          }
 
          serviceInstance.Send(message);
