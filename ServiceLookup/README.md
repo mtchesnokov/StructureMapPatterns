@@ -1,77 +1,47 @@
 # Service lookup
 
 ## Problem
-Imagine we have the following problem: our application should be able to send different types of messages to users. Say, sms or email. However the type of the message that should be sent is only known at runtime when user select it in dropdown. So our requirements are as follows: 
-- Type of message to be sent is only know at runtime
+Imagine we have the following problem: our application should be able to send different types of messages to users. Say, sms or email. 
+However the actual type of the message that should be sent is only known at runtime. 
+
+So our requirements are as follows: 
+- Type of message to be sent is only known at runtime
 - New types of messages can be added in the future
 - Adding new type of message should have minimum implementation effort 
 - Adding new type of message should have minimum impact on the existing codebase
-- And last but not least, adding new code should not increase cyclomatic complexity of the code. That is, no if's!
+- And of course, adding new code should not increase cyclomatic complexity of the code. Simply put, no if's!
 
 ## Solution
-Thanks to a simple trick in the implementation, it is possible to use DI container itself as dispatcher that locates the 
-right implementation given the message type. 
+With the help of extra interface, it would be possible to use the DI container itself as dispatcher that locates the right implementation 
+we need for the provided message type. 
 
-
-## Using lookup 
+## Usage example
 
 ```csharp
-   public interface IMessage
-   {
-   }
+public class SmsMessage : IMessage
+{
+}
 
-   public interface ICanSendMessage
-   {
-      void Send(IMessage message);
-   }
+public class EmailMessage : IMessage
+{
+}
+
+public interface IMessageService
+{
+   void Send(IMessage message);
+}
    
-    private static void SendingSmsMessage(IContainer container)
-    {
-       var service = container.GetInstance<ICanSendMessage>();
-       var message = new SmsMessage();
-       service.Send(message);
-    }
-    
-   private static void SendingMailMessage(IContainer container)
-   {
-      var service = container.GetInstance<ICanSendMessage>();
-      var message = new MailMessage();
-      service.Send(message);
-   }
+private static void Main(string[] args)
+{   
+   ...
+
+   IMessageService messageService = container.GetInstance<IMessageService>();
+
+   var message = new SmsMessage();
+   service.Send(message);
+
+   var message = new MailMessage();
+   service.Send(message);
+}
+   
 ```
-
-
-## Sms message
-
-```csharp
-   public class SmsMessage : IMessage
-   {
-   }
-
-   public class SmsMessageSendService : CanSendSpecificMessageBase<SmsMessage>
-   {
-      public override void Send(SmsMessage message)
-      {
-         Console.WriteLine("Sending sms message...");
-      }
-   }
-       
-```
-
-## Email message
-
-```csharp
-   public class EmailMessage : IMessage
-   {
-   }
-
-   public class EmailMessageSendService : CanSendSpecificMessageBase<EmailMessage>
-   {
-      public override void Send(EmailMessage message)
-      {
-         Console.WriteLine("Sending email message...");
-      }
-   }
-       
-```
-
